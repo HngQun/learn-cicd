@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, linux, static-web]
+    runs-on: [self-hosted, Linux, X64]
 
     steps:
       - name: Checkout code
