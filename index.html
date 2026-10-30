@@ -1,1 +1,66 @@
-<h1>Hello Mấy con tó</h1>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Góc nhỏ của HngQun. Kết nối với mình qua Facebook và khám phá các dự án trên GitHub.">
+  <meta name="theme-color" content="#f3f1eb">
+  <title>HngQun — Kết nối với mình</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; min-height: 100svh; padding: 32px 20px; display: grid; place-items: center; background: #f3f1eb; color: #24382e; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    main { width: 100%; max-width: 460px; }
+    .card { overflow: hidden; background: #fffefb; border: 1px solid #dcded5; border-radius: 28px; box-shadow: 0 24px 64px #24382e0d; }
+    .cover { height: 130px; position: relative; overflow: hidden; background: #254c3c; }
+    .cover::before, .cover::after { content: ""; position: absolute; width: 250px; height: 250px; border: 1px solid #a6c4a54d; border-radius: 50%; top: -145px; right: -20px; }
+    .cover::after { width: 330px; height: 330px; top: -145px; right: -60px; }
+    .cover span { position: absolute; top: 26px; left: 30px; color: #d1e2cc; font-size: 11px; letter-spacing: 3px; }
+    .content { padding: 0 32px 32px; }
+    .avatar { position: relative; width: 86px; height: 86px; display: grid; place-items: center; margin-top: -43px; border: 6px solid #fffefb; border-radius: 26px; background: #e1eacb; color: #254c3c; font-size: 28px; font-weight: 750; letter-spacing: -2px; }
+    .intro { margin-top: 26px; }
+    .eyebrow { margin: 0 0 8px; font-size: 13px; color: #63745f; }
+    h1 { margin: 0; font-size: clamp(32px, 8vw, 40px); letter-spacing: -1.5px; line-height: 1.2; }
+    .bio { margin: 16px 0 28px; color: #687269; font-size: 15px; line-height: 1.8; }
+    .links { display: grid; gap: 12px; }
+    .link { display: flex; gap: 14px; align-items: center; min-height: 76px; padding: 16px; border: 1px solid #dde3d6; border-radius: 15px; text-decoration: none; color: inherit; background: #f5f7ef; transition: background .2s, transform .2s; }
+    .link:hover { background: #e9efdf; transform: translateY(-2px); }
+    .link:focus-visible { outline: 3px solid #457c58; outline-offset: 4px; }
+    .icon { width: 36px; height: 36px; flex-shrink: 0; display: grid; place-items: center; background: #fffefb; border-radius: 10px; }
+    .icon svg { width: 21px; height: 21px; fill: currentColor; }
+    .link strong { display: block; font-size: 15px; font-weight: 650; }
+    .link small { display: block; color: #687269; margin-top: 4px; font-size: 12px; }
+    .arrow { margin-left: auto; font-size: 22px; color: #63745f; }
+    .note { margin: 26px 0 0; padding-top: 22px; border-top: 1px solid #e7e9df; color: #78816f; font-size: 12px; text-align: center; line-height: 1.6; }
+    footer { margin-top: 22px; text-align: center; font-size: 11px; letter-spacing: 2px; color: #7d8678; }
+    @media (max-width: 380px) { .content { padding-right: 22px; padding-left: 22px; } }
+    @media (prefers-reduced-motion: reduce) { .link { transition: none; } .link:hover { transform: none; } }
+  </style>
+</head>
+<body>
+  <main>
+    <article class="card" aria-labelledby="name">
+      <div class="cover" aria-hidden="true"><span>MY LITTLE CORNER</span></div>
+      <div class="content">
+        <div class="avatar" aria-hidden="true">HQ</div>
+        <header class="intro">
+          <p class="eyebrow">Xin chào, mình là</p>
+          <h1 id="name">HngQun<span aria-hidden="true">.</span></h1>
+          <p class="bio">Chào mừng bạn đến với góc nhỏ của mình.<br>Kết nối, trò chuyện và khám phá những điều mình đang làm nhé.</p>
+        </header>
+        <nav class="links" aria-label="Kết nối với HngQun">
+          <a class="link" href="https://www.facebook.com/HngQun" target="_blank" rel="noopener noreferrer" aria-label="Facebook của HngQun (mở tab mới)">
+            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.095 10.125 24v-8.437H7.078v-3.49h3.047V9.413c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.49 0-1.956.931-1.956 1.887v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.095 24 18.1 24 12.073Z"/></svg></span>
+            <span><strong>Facebook</strong><small>Kết nối và trò chuyện</small></span><span class="arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="link" href="https://github.com/HngQun" target="_blank" rel="noopener noreferrer" aria-label="GitHub của HngQun (mở tab mới)">
+            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.794 23.384c.6.111.82-.261.82-.577v-2.234c-3.338.726-4.043-1.416-4.043-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.071 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.762-1.605-2.665-.303-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.323 3.301 1.23a11.52 11.52 0 0 1 6.008 0c2.291-1.553 3.297-1.23 3.297-1.23.654 1.652.243 2.873.119 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.625-5.479 5.922.43.372.823 1.102.823 2.222v3.292c0 .319.216.694.825.576A12.001 12.001 0 0 0 12 .5Z"/></svg></span>
+            <span><strong>GitHub</strong><small>Khám phá các dự án của mình</small></span><span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </nav>
+        <p class="note">Rất vui vì bạn đã ghé thăm 🌿</p>
+      </div>
+    </article>
+    <footer>HNGQUN · PERSONAL SPACE</footer>
+  </main>
+</body>
+</html>
