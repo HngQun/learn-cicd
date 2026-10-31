@@ -1,0 +1,33 @@
+
+name: Deploy Static Website
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Nginx
+        run: |
+          test -f index.html
+
+          rsync -av --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            ./ /var/www/learn-cicd/
+
+      - name: Verify deployment
+        run: |
+          curl -f http://localhost:8080
+
