@@ -170,6 +170,15 @@
       letter-spacing: -0.07em;
     }
 
+    .profile-scene {
+      height: 180px;
+      margin: -10px -10px 20px;
+      border-radius: 12px;
+      background: radial-gradient(circle, rgba(196, 241, 107, 0.12), transparent 70%);
+    }
+    .profile-scene canvas { display: block; width: 100%; height: 100%; }
+    .profile-scene[hidden] { display: none; }
+
     .profile-card h2 { margin: 0; font-size: 21px; letter-spacing: -0.04em; }
     .profile-card > p { margin: 5px 0 22px; color: var(--muted); font-size: 13px; }
     .card-divider { height: 1px; background: var(--line); }
@@ -301,6 +310,7 @@
       </div>
 
       <aside class="profile-card" aria-label="Thông tin cá nhân">
+        <div class="profile-scene" id="profile-scene" aria-hidden="true" hidden></div>
         <div class="avatar" aria-hidden="true">HQ</div>
         <h2>HngQun</h2>
         <p>Odoo Developer · Python Developer</p>
@@ -407,5 +417,107 @@
     <span>© <span id="year">2026</span> HngQun. Được tạo với sự tò mò và một chút cà phê.</span>
     <a href="#home">Về đầu trang ↑</a>
   </footer>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
+      }
+    }
+  </script>
+  <script type="module">
+    const container = document.getElementById('profile-scene');
+    let renderer;
+
+    try {
+      const THREE = await import('three');
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+      container.hidden = false;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 30);
+      camera.position.z = 5;
+
+      const sculpture = new THREE.Group();
+      scene.add(sculpture);
+      const geometry = new THREE.IcosahedronGeometry(1, 0);
+      const core = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({
+        color: 0x658c34, metalness: 0.45, roughness: 0.35,
+        flatShading: true
+      }));
+      sculpture.add(core);
+      const edges = new THREE.LineSegments(
+        new THREE.EdgesGeometry(geometry),
+        new THREE.LineBasicMaterial({ color: 0xc4f16b })
+      );
+      edges.scale.setScalar(1.005);
+      sculpture.add(edges);
+
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(1.45, 0.012, 8, 96),
+        new THREE.MeshBasicMaterial({ color: 0xc4f16b })
+      );
+      ring.rotation.set(1.1, 0.3, 0);
+      sculpture.add(ring);
+      scene.add(new THREE.HemisphereLight(0xf0f1e9, 0x171b16, 3));
+      const light = new THREE.DirectionalLight(0xc4f16b, 4);
+      light.position.set(3, 4, 5);
+      scene.add(light);
+
+      const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let visible = false;
+      let previousTime = null;
+      sculpture.rotation.set(0.2, 0.4, 0);
+
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+      function animate(time) {
+        if (previousTime !== null) {
+          const delta = Math.min((time - previousTime) / 1000, 0.05);
+          sculpture.rotation.y += delta * 0.3;
+          sculpture.rotation.x += delta * 0.08;
+        }
+        previousTime = time;
+        render();
+      }
+
+      function updateAnimation() {
+        previousTime = null;
+        renderer.setAnimationLoop(visible && !document.hidden && !motion.matches ? animate : null);
+        if (!document.hidden) render();
+      }
+
+      const resizeObserver = new ResizeObserver(() => {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        if (!width || !height) return;
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        render();
+      });
+      resizeObserver.observe(container);
+
+      const intersectionObserver = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        updateAnimation();
+      });
+      intersectionObserver.observe(container);
+      motion.addEventListener('change', updateAnimation);
+      document.addEventListener('visibilitychange', updateAnimation);
+      renderer.domElement.addEventListener('webglcontextlost', (event) => {
+        event.preventDefault();
+        renderer.setAnimationLoop(null);
+      });
+      renderer.domElement.addEventListener('webglcontextrestored', updateAnimation);
+    } catch (error) {
+      renderer?.dispose();
+      container.hidden = true;
+      console.warn('Không thể tải hiệu ứng Three.js:', error);
+    }
+  </script>
 </body>
 </html>
