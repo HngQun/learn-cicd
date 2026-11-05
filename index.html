@@ -8,6 +8,10 @@
   <title>HngQun — Odoo Developer</title>
   <script>
     // Deter common DevTools shortcuts; this is not a security boundary.
+    document.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+    }, { capture: true });
+
     document.addEventListener('keydown', (event) => {
       const key = event.key.toLowerCase();
       const windowsDevTools = event.ctrlKey && event.shiftKey &&
