@@ -1,301 +1,321 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portfolio của HngQun — phát triển Odoo, Python, JavaScript và các giải pháp web.">
-  <meta name="theme-color" content="#10130f">
-  <title>HngQun — Odoo Developer</title>
-  <script>
-    // Deter common DevTools shortcuts; this is not a security boundary.
-    document.addEventListener('contextmenu', (event) => {
-      event.preventDefault();
-    }, { capture: true });
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hỏi Bài – Xem Tarot online</title>
+<style>
+:root{--bg:#0d1b24;--panel:#14262f;--line:#2b4552;--ink:#efe6d2;--mut:#9fb0b5;--acc:#e0653f;--gold:#d6b56a;--cw:clamp(52px,9vw,96px)}
+*{box-sizing:border-box;margin:0}
+html,body{min-height:100%}
+body{background:radial-gradient(1200px 600px at 70% -10%,#1d3a47 0,transparent 60%),var(--bg);color:var(--ink);font:17px/1.65 "Trebuchet MS","Segoe UI",sans-serif;overflow-x:hidden}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:normal;line-height:1.2}
+.stage{max-width:980px;margin:0 auto;padding:32px 18px 60px;animation:in .6s ease}
+.stage[hidden]{display:none}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-    document.addEventListener('keydown', (event) => {
-      const key = event.key.toLowerCase();
-      const windowsDevTools = event.ctrlKey && event.shiftKey &&
-        ['i', 'j', 'c', 'k'].includes(key);
-      const macDevTools = event.metaKey && event.altKey &&
-        ['i', 'j', 'c', 'k'].includes(key);
+/* Hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.brand{font-family:Georgia,serif;color:var(--gold);font-size:20px;margin-bottom:28px}
+.hero h1{font-size:clamp(34px,6.4vw,62px);max-width:14em;margin-bottom:14px}
+.hero p.sub{color:var(--mut);max-width:34em;margin-bottom:26px}
+.ask{display:flex;gap:10px;max-width:700px;flex-wrap:wrap}
+.ask textarea{flex:1 1 320px;min-height:64px;padding:14px 16px;font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--line);border-radius:10px;resize:none}
+.ask textarea:focus{outline:none;border-color:var(--gold)}
+.btn{padding:14px 26px;font:inherit;font-weight:bold;color:#fff;background:var(--acc);border:0;border-radius:10px;cursor:pointer}
+.btn:hover{filter:brightness(1.1)}.btn:disabled{opacity:.5;cursor:default}
+.btn.ghost{background:transparent;border:2px solid var(--line);color:var(--ink)}
+.err{color:#ff9d80;margin-top:10px;min-height:24px;font-size:15px}
+.eg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;max-width:700px}
+.eg button{font:inherit;font-size:14px;color:var(--mut);background:transparent;border:1px solid var(--line);border-radius:20px;padding:5px 12px;cursor:pointer}
+.eg button:hover{color:var(--ink);border-color:var(--gold)}
+.deco{position:absolute;right:4vw;top:14vh;width:300px;height:340px;pointer-events:none;opacity:.9}
+.deco .card{position:absolute;left:50%;top:60px;margin-left:calc(var(--cw)/-2);transform-origin:50% 140%;animation:sway 6s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(var(--a))}to{transform:rotate(calc(var(--a) + 5deg))}}
+@media(max-width:760px){.deco{display:none}}
 
-      if (key === 'f12' || windowsDevTools || macDevTools) {
-        event.preventDefault();
-      }
-    }, { capture: true });
-  </script>
-  <style>
-    :root {
-      color-scheme: dark;
-      --background: #10130f;
-      --surface: #171b16;
-      --surface-raised: #1d221c;
-      --text: #f0f1e9;
-      --muted: #9da397;
-      --accent: #c4f16b;
-      --line: rgba(240, 241, 233, 0.12);
-      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+/* Card */
+.card{width:var(--cw);height:calc(var(--cw)*1.62);border-radius:7px;cursor:pointer;
+background:radial-gradient(circle at 50% 50%,var(--gold) 0 7%,transparent 8% 15%,var(--gold) 16% 17%,transparent 18%),repeating-linear-gradient(45deg,#1a3947 0 6px,#173240 6px 12px);
+border:2px solid var(--gold);box-shadow:0 4px 12px rgba(0,0,0,.45)}
 
-    * { box-sizing: border-box; }
+/* Spread */
+.head{margin-bottom:6px}
+.head h2{font-size:clamp(24px,4vw,34px)}
+.q-echo{color:var(--gold);font-family:Georgia,serif;font-style:italic;margin:6px 0 4px}
+.hint{color:var(--mut);font-size:15px}
+.fan{position:relative;height:calc(var(--cw)*1.62 + 80px);margin-top:26px}
+.fan .card{position:absolute;left:50%;top:50px;margin-left:calc(var(--cw)/-2);transition:transform .8s cubic-bezier(.2,.8,.2,1),opacity .5s,box-shadow .3s}
+.fan .card:hover{box-shadow:0 0 0 2px var(--gold),0 8px 18px rgba(0,0,0,.5)}
+.fan .card.sel{box-shadow:0 0 0 3px var(--acc),0 0 22px var(--acc)}
+.fan.done .card:not(.sel){opacity:0;pointer-events:none}
+.count{margin-top:14px;font-family:Georgia,serif;font-size:20px;color:var(--gold)}
 
-    html { scroll-behavior: smooth; }
+/* Reading */
+.row3{display:flex;justify-content:center;gap:clamp(12px,4vw,40px);margin:24px 0 28px}
+.slot{text-align:center;width:min(30vw,170px)}
+.flip{perspective:900px;width:100%;aspect-ratio:1/1.62}
+.flip .in{position:relative;width:100%;height:100%;transition:transform 1s cubic-bezier(.3,.8,.3,1);transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .bk,.flip .ft{position:absolute;inset:0;border-radius:9px;border:2px solid var(--gold);backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.flip .bk{background:radial-gradient(circle at 50% 50%,var(--gold) 0 7%,transparent 8% 15%,var(--gold) 16% 17%,transparent 18%),repeating-linear-gradient(45deg,#1a3947 0 6px,#173240 6px 12px)}
+.flip .ft{transform:rotateY(180deg);background:#efe6d2;color:#2a2418;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:8% 6%;outline:3px double #b79a55;outline-offset:-8px}
+.ft .tl{font:bold clamp(13px,2.4vw,18px) Georgia,serif}
+.ft .mid{font-size:clamp(34px,8vw,66px);line-height:1;color:#a5432b}
+.ft .nm{font:bold clamp(11px,2vw,15px) Georgia,serif;text-align:center;line-height:1.2}
+.ft.rev{}.ft.rev>*{transform:rotate(180deg)}
+.cap{margin-top:10px;font-size:14px;color:var(--mut);opacity:0;transition:opacity .6s}
+.cap b{display:block;color:var(--ink);font-family:Georgia,serif;font-size:16px;font-weight:normal}
+.slot.shown .cap{opacity:1}
 
-    body {
-      margin: 0;
-      background:
-        radial-gradient(ellipse at 82% 7%, rgba(196, 241, 107, 0.09), transparent 31rem),
-        var(--background);
-      color: var(--text);
-      font-family: var(--font);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
-    .wrap { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 82px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 11px;
-      font-size: 15px;
-      font-weight: 750;
-      letter-spacing: -0.04em;
-    }
-
-    .brand-mark {
-      display: grid;
-      width: 34px;
-      height: 34px;
-      place-items: center;
-      border-radius: 10px;
-      background: var(--accent);
-      color: #14180e;
-      font-size: 14px;
-      font-weight: 850;
-    }
-
-    .nav { display: flex; align-items: center; gap: 31px; }
-    .nav a { color: var(--muted); font-size: 13px; transition: color 160ms ease; }
-    .nav a:hover { color: var(--text); }
-    .nav .nav-contact { color: var(--accent); }
-
-    .hero {
-      display: grid;
-      min-height: 580px;
-      grid-template-columns: minmax(0, 1fr) 360px;
-      align-items: center;
-      gap: 60px;
-      padding-block: 74px 92px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      color: var(--accent);
-      font-size: 11px;
-      font-weight: 750;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 14px rgba(196, 241, 107, 0.7);
-    }
-
-    h1 {
-      max-width: 720px;
-      margin: 23px 0 20px;
-      font-size: clamp(46px, 7vw, 78px);
-      font-weight: 730;
-      letter-spacing: -0.075em;
-      line-height: 1.02;
-    }
-
-    h1 span { color: var(--accent); }
-    .hero-copy { max-width: 575px; color: var(--muted); font-size: 16px; }
-
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-
-    .button {
-      display: inline-flex;
-      min-height: 46px;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 0 17px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
-    }
-
-    .button:hover { transform: translateY(-2px); border-color: rgba(196, 241, 107, 0.55); }
-    .button-primary { border-color: var(--accent); background: var(--accent); color: #14180e; }
-    .button-primary:hover { background: #d3fa82; }
-    .button svg, .social-link svg { width: 17px; height: 17px; fill: currentColor; }
-
-    .profile-card {
-      position: relative;
-      overflow: hidden;
-      padding: 27px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background:
-        radial-gradient(circle at 100% 0, rgba(196, 241, 107, 0.15), transparent 55%),
-        var(--surface);
-    }
-
-    .profile-card::before {
-      position: absolute;
-      top: -34px;
-      right: -28px;
-      width: 130px;
-      height: 130px;
-      border: 1px solid rgba(196, 241, 107, 0.2);
-      border-radius: 50%;
-      content: "";
-    }
-
-    .avatar {
-      display: grid;
-      width: 62px;
-      height: 62px;
-      place-items: center;
-      margin-bottom: 22px;
-      border: 1px solid rgba(196, 241, 107, 0.4);
-      border-radius: 18px;
-      background: rgba(196, 241, 107, 0.11);
-      color: var(--accent);
-      font-size: 23px;
-      font-weight: 800;
-      letter-spacing: -0.07em;
-    }
-
-    .profile-scene {
-      height: 180px;
-      margin: -10px -10px 20px;
-      border-radius: 12px;
-      background: radial-gradient(circle, rgba(196, 241, 107, 0.12), transparent 70%);
-    }
-    .profile-scene canvas { display: block; width: 100%; height: 100%; }
-    .profile-scene[hidden] { display: none; }
-
-    .profile-card h2 { margin: 0; font-size: 21px; letter-spacing: -0.04em; }
-    .profile-card > p { margin: 5px 0 22px; color: var(--muted); font-size: 13px; }
-    .card-divider { height: 1px; background: var(--line); }
-    .profile-meta { display: grid; gap: 13px; padding-top: 18px; }
-    .meta-row { display: flex; justify-content: space-between; gap: 16px; font-size: 12px; }
-    .meta-label { color: var(--muted); }
-    .meta-value { overflow-wrap: anywhere; text-align: right; font-weight: 650; }
-    .meta-value a { color: inherit; }
-    .meta-value a:hover { color: var(--accent); }
-
-    .socials { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 23px; }
-    .social-link {
-      display: inline-flex;
-      min-height: 39px;
-      align-items: center;
-      gap: 8px;
-      padding: 0 11px;
-      border: 1px solid var(--line);
-      border-radius: 7px;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 650;
-      transition: color 160ms ease, border-color 160ms ease;
-    }
-    .social-link:hover { border-color: var(--accent); color: var(--accent); }
-
-    .section { padding-block: 82px; border-top: 1px solid var(--line); }
-    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 31px; }
-    .section-kicker { margin: 0 0 8px; color: var(--accent); font-size: 10px; font-weight: 750; letter-spacing: 0.15em; text-transform: uppercase; }
-    h2.section-title { margin: 0; font-size: clamp(28px, 4vw, 39px); letter-spacing: -0.06em; line-height: 1.12; }
-    .section-intro { max-width: 410px; margin: 0; color: var(--muted); font-size: 13px; }
-
-    .tech-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-    .tech-card {
-      min-height: 130px;
-      padding: 19px;
-      border: 1px solid var(--line);
-      border-radius: 11px;
-      background: linear-gradient(145deg, rgba(255,255,255,0.025), transparent 75%), var(--surface);
-      transition: border-color 160ms ease, transform 160ms ease;
-    }
-    .tech-card:hover { transform: translateY(-3px); border-color: rgba(196, 241, 107, 0.42); }
-    .tech-icon { display: grid; width: 30px; height: 30px; place-items: center; margin-bottom: 14px; border-radius: 8px; background: rgba(196, 241, 107, 0.1); color: var(--accent); font-size: 11px; font-weight: 800; }
-    .tech-card h3 { margin: 0 0 3px; font-size: 14px; letter-spacing: -0.02em; }
-    .tech-card p { margin: 0; color: var(--muted); font-size: 11px; }
-
-    .focus-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
-    .focus-card { padding: 23px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
-    .focus-number { color: var(--accent); font-size: 11px; font-weight: 750; letter-spacing: 0.08em; }
-    .focus-card h3 { margin: 16px 0 7px; font-size: 16px; letter-spacing: -0.035em; }
-    .focus-card p { margin: 0; color: var(--muted); font-size: 12px; }
-
-    .contact-panel {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 28px;
-      padding: 32px;
-      border: 1px solid rgba(196, 241, 107, 0.25);
-      border-radius: 14px;
-      background: linear-gradient(110deg, rgba(196, 241, 107, 0.1), transparent 76%), var(--surface);
-    }
-    .contact-panel h2 { margin: 0 0 8px; font-size: clamp(24px, 4vw, 34px); letter-spacing: -0.06em; }
-    .contact-panel p { margin: 0; color: var(--muted); font-size: 13px; }
-    .contact-panel .button { flex: 0 0 auto; }
-
-    footer { display: flex; justify-content: space-between; gap: 20px; padding-block: 25px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
-    footer a { color: var(--text); }
-
-    @media (max-width: 760px) {
-      .hero { min-height: 0; grid-template-columns: 1fr; gap: 38px; padding-block: 72px; }
-      .profile-card { max-width: 460px; }
-      .tech-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .focus-grid { grid-template-columns: 1fr; }
-      .section-heading { align-items: start; flex-direction: column; }
-      .section-intro { max-width: 520px; }
-      .section { padding-block: 65px; }
-    }
-
-    @media (max-width: 480px) {
-      .wrap { width: min(100% - 34px, 1120px); }
-      .topbar { min-height: 70px; }
-      .nav { gap: 15px; }
-      .nav a { font-size: 11px; }
-      .nav a:nth-child(2) { display: none; }
-      .hero { padding-block: 58px; }
-      h1 { font-size: clamp(43px, 13vw, 60px); }
-      .hero-copy { font-size: 14px; }
-      .tech-grid { gap: 9px; }
-      .tech-card { min-height: 122px; padding: 15px; }
-      .contact-panel { align-items: start; flex-direction: column; padding: 24px; }
-      footer { flex-direction: column; gap: 7px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
-    }
-  </style>
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px clamp(16px,4vw,30px);max-width:720px;margin:0 auto}
+.panel h3{font-size:clamp(20px,3.4vw,26px);margin-bottom:14px}
+.prog{color:var(--mut);font-size:14px;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.chips button{font:inherit;font-size:15px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:20px;padding:6px 14px;cursor:pointer}
+.chips button:hover{border-color:var(--gold)}
+.panel textarea{width:100%;min-height:78px;padding:12px;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:10px;resize:vertical;margin-bottom:14px}
+.panel textarea:focus{outline:none;border-color:var(--gold)}
+.load{display:flex;align-items:center;gap:12px;color:var(--mut)}
+.spin{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:sp 1s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.res h3{color:var(--gold);margin:18px 0 6px;font-size:20px}
+.res h3:first-child{margin-top:0}
+.res p{margin-bottom:10px}.res ul{margin:0 0 10px 20px}
+.res li{margin-bottom:4px}
+.foot{color:var(--mut);font-size:13px;margin-top:16px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style>
 </head>
-<body><h1 style="text-align:center; margin-top: 20%;">vaibiu 1231231233</h1>
+<body>
+
+<!-- 1. Trang đầu -->
+<section class="stage hero" id="s-hero">
+  <div class="deco" aria-hidden="true" id="deco"></div>
+  <div class="brand">Hỏi Bài</div>
+  <h1>Điều gì đang làm bạn băn khoăn?</h1>
+  <p class="sub">Viết câu hỏi của bạn, chọn ba lá bài, trả lời vài câu hỏi ngắn. Lá bài sẽ giúp bạn nhìn rõ hơn điều mình đang tìm.</p>
+  <form class="ask" id="askForm">
+    <textarea id="q" maxlength="200" placeholder="Ví dụ: Tôi có nên đổi việc trong năm nay không?" aria-label="Câu hỏi của bạn"></textarea>
+    <button class="btn" type="submit">Trải bài</button>
+  </form>
+  <div class="err" id="err" role="alert"></div>
+  <div class="eg" id="eg"></div>
+</section>
+
+<!-- 2. Trải bài -->
+<section class="stage" id="s-spread" hidden>
+  <div class="head"><h2>Chọn ba lá bài thu hút bạn</h2></div>
+  <div class="q-echo" id="echo"></div>
+  <div class="hint">Hít một hơi sâu, tập trung vào câu hỏi rồi chạm vào ba lá bài.</div>
+  <div class="fan" id="fan"></div>
+  <div class="count" id="count">Đã chọn 0 / 3</div>
+</section>
+
+<!-- 3. Lật bài, hỏi đáp, kết quả -->
+<section class="stage" id="s-read" hidden>
+  <div class="q-echo" id="echo2" style="text-align:center"></div>
+  <div class="row3" id="row3"></div>
+  <div class="panel" id="panel"></div>
+</section>
+
+<script>
+/* ============ CẤU HÌNH (điền API key để test) ============ */
+const CONFIG = {
+  API_KEY: 'DAN_API_KEY_SHOPAIKEY_CUA_BAN_VAO_DAY',
+  BASE_URL: 'https://api.shopaikey.com/v1/chat/completions',
+  MODEL: 'gpt-4o'            // đổi sang model khác theo bảng giá ShopAIKey nếu muốn
+};
+/* ========================================================= */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+/* ---------- Bộ bài 78 lá ---------- */
+const ROMAN = ['0','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'];
+const MAJOR = ['Chàng Khờ','Nhà Ảo Thuật','Nữ Tư Tế','Hoàng Hậu','Hoàng Đế','Giáo Hoàng','Cặp Đôi','Cỗ Xe','Sức Mạnh','Ẩn Sĩ','Bánh Xe Số Phận','Công Lý','Người Treo Ngược','Thần Chết','Điều Độ','Ác Quỷ','Tòa Tháp','Ngôi Sao','Mặt Trăng','Mặt Trời','Phán Xét','Thế Giới'];
+const SUITS = [['Gậy','♣'],['Cốc','♥'],['Kiếm','♠'],['Tiền','♦']];
+const RANKS = ['Ách','Hai','Ba','Bốn','Năm','Sáu','Bảy','Tám','Chín','Mười','Thị Đồng','Hiệp Sĩ','Hoàng Hậu','Vua'];
+const DECK = MAJOR.map((n, i) => ({name: n, top: ROMAN[i], glyph: '✶'}));
+SUITS.forEach(([s, g]) => RANKS.forEach((r, i) => DECK.push({name: r + ' ' + s, top: i < 10 ? String(i + 1) : r[0], glyph: g})));
+const POS = ['Bối cảnh', 'Thử thách', 'Hướng đi'];
+
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+/* ---------- Gọi AI (ShopAIKey, định dạng OpenAI) ---------- */
+async function ai(messages, max = 2000) {
+  if (!CONFIG.API_KEY || CONFIG.API_KEY.startsWith('DAN_')) throw new Error('Chưa điền API key. Mở file index.html và điền vào CONFIG.API_KEY.');
+  let r;
+  try {
+    r = await fetch(CONFIG.BASE_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + CONFIG.API_KEY},
+      body: JSON.stringify({model: CONFIG.MODEL, messages, max_tokens: max})
+    });
+  } catch (e) { throw new Error('Không kết nối được tới API (mạng hoặc CORS). Mở F12 > Console để xem chi tiết.'); }
+  if (!r.ok) {
+    let t = ''; try { t = (await r.json()).error?.message || ''; } catch (e) {}
+    throw new Error('API trả lỗi ' + r.status + (t ? ': ' + t : ''));
+  }
+  const d = await r.json();
+  return d.choices?.[0]?.message?.content || '';
+}
+const SYS = 'Bạn là người đọc bài Tarot giàu kinh nghiệm, nói tiếng Việt, giọng ấm áp, đồng cảm và thực tế. Bạn không khẳng định tuyệt đối về tương lai và không thay thế tư vấn y tế, pháp lý hay tài chính.';
+const cardsText = cs => cs.map((c, i) => `${POS[i]}: ${c.name}${c.rev ? ' (ngược)' : ' (xuôi)'}`).join('; ');
+
+/* ---------- Trang đầu ---------- */
+const EG = ['Tôi có nên đổi việc không?', 'Mối quan hệ này sẽ đi về đâu?', 'Tháng tới tài chính của tôi thế nào?'];
+$('#eg').innerHTML = EG.map(t => `<button type="button">${t}</button>`).join('');
+$('#eg').onclick = e => { if (e.target.tagName === 'BUTTON') { $('#q').value = e.target.textContent; $('#q').focus(); } };
+$('#deco').innerHTML = [-24, -12, 0, 12, 24].map(a => `<div class="card" style="--a:${a}deg;transform:rotate(${a}deg)"></div>`).join('');
+$('#q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#askForm').requestSubmit(); } });
+
+let question = '', picks = [], deck = [];
+$('#askForm').onsubmit = e => {
+  e.preventDefault();
+  question = $('#q').value.trim();
+  if (question.length < 4) { $('#err').textContent = 'Hãy viết câu hỏi của bạn (ít nhất vài chữ) để lá bài có điều để trả lời.'; return; }
+  $('#err').textContent = '';
+  $('#s-hero').hidden = true; $('#s-spread').hidden = false;
+  $('#echo').textContent = '“' + question + '”';
+  startSpread();
+};
+
+/* ---------- Trải bài ---------- */
+const N = 21; let cards = [], pos = [], lock = false;
+function startSpread() {
+  deck = shuffle(DECK).map(c => ({...c, rev: Math.random() < .3}));
+  const fan = $('#fan'); fan.innerHTML = ''; cards = [];
+  for (let i = 0; i < N; i++) {
+    const c = document.createElement('div'); c.className = 'card'; c.dataset.i = i;
+    c.setAttribute('role', 'button'); c.setAttribute('aria-label', 'Lá bài ' + (i + 1));
+    c.tabIndex = 0; c.style.transform = 'translate(0,0)';
+    c.onclick = () => toggle(i);
+    c.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(i); } };
+    fan.appendChild(c); cards.push(c);
+  }
+  picks = []; lock = false; fan.classList.remove('done'); updateCount();
+  requestAnimationFrame(() => setTimeout(() => place(true), 350)); // bày bài từ chồng bài ra
+}
+function place(stagger) {
+  const fan = $('#fan'), w = fan.clientWidth, cw = cards[0].offsetWidth, gap = (w - cw) / (N - 1);
+  cards.forEach((c, i) => {
+    const m = i - (N - 1) / 2, x = m * gap, y = Math.pow(m / (N / 2), 2) * 26 + (picks.includes(i) ? -30 : 0), r = m * 2.6;
+    c.style.transitionDelay = stagger ? i * 35 + 'ms' : '0ms';
+    c.style.transform = `translate(${x}px,${y}px) rotate(${r}deg)`;
+    c.style.zIndex = i;
+  });
+}
+addEventListener('resize', () => { if (cards.length && !$('#s-spread').hidden) place(false); });
+function updateCount() { $('#count').textContent = 'Đã chọn ' + picks.length + ' / 3'; }
+async function toggle(i) {
+  if (lock) return;
+  const k = picks.indexOf(i);
+  if (k >= 0) picks.splice(k, 1);
+  else { if (picks.length >= 3) return; picks.push(i); }
+  cards.forEach((c, j) => c.classList.toggle('sel', picks.includes(j)));
+  place(false); updateCount();
+  if (picks.length === 3) {
+    lock = true; await sleep(700);
+    $('#fan').classList.add('done'); await sleep(600);
+    startReading();
+  }
+}
+
+/* ---------- Lật bài ---------- */
+let chosen = [];
+async function startReading() {
+  chosen = picks.map(i => deck[i]);
+  $('#s-spread').hidden = true; $('#s-read').hidden = false;
+  $('#echo2').textContent = '“' + question + '”';
+  $('#row3').innerHTML = chosen.map((c, i) => `
+    <div class="slot" id="slot${i}">
+      <div class="flip" id="flip${i}"><div class="in">
+        <div class="bk"></div>
+        <div class="ft${c.rev ? ' rev' : ''}"><span class="tl">${esc(c.top)}</span><span class="mid">${c.glyph}</span><span class="nm">${esc(c.name)}</span></div>
+      </div></div>
+      <div class="cap">${POS[i]}<b>${esc(c.name)}${c.rev ? ' (ngược)' : ''}</b></div>
+    </div>`).join('');
+  loading('Các lá bài đang chuẩn bị câu hỏi cho bạn…');
+  const qp = getQuestions().catch(() => null);          // gọi AI song song với lúc lật bài
+  await sleep(700);
+  for (let i = 0; i < 3; i++) {
+    $('#flip' + i).classList.add('on');
+    await sleep(900); $('#slot' + i).classList.add('shown'); await sleep(250);
+  }
+  let qs = await qp;
+  if (!qs || !qs.length) qs = [
+    {q: 'Điều gì trong câu hỏi này khiến bạn băn khoăn nhất lúc này?', options: ['Sợ quyết định sai', 'Thiếu thông tin', 'Áp lực từ người khác']},
+    {q: 'Nếu mọi việc suôn sẻ, bạn mong kết quả cuối cùng trông như thế nào?', options: ['Ổn định hơn', 'Tự do hơn', 'Được công nhận hơn']}];
+  askLoop(qs);
+}
+async function getQuestions() {
+  const txt = await ai([
+    {role: 'system', content: SYS},
+    {role: 'user', content: `Câu hỏi của người xem: "${question}"\nBa lá bài: ${cardsText(chosen)}.\nHãy đặt từ 2 đến 4 câu hỏi ngắn bằng tiếng Việt để hiểu rõ hơn hoàn cảnh của họ, bám theo ý nghĩa các lá bài và câu hỏi. Mỗi câu có 3 gợi ý trả lời ngắn (tối đa 6 từ). Không hỏi thông tin nhạy cảm như số giấy tờ hay tài khoản. Chỉ trả về JSON đúng dạng: {"questions":[{"q":"...","options":["...","...","..."]}]}`}
+  ], 900);
+  const m = txt.match(/\{[\s\S]*\}/);
+  const arr = JSON.parse(m[0]).questions.filter(x => x && x.q).slice(0, 4);
+  return arr.length >= 2 ? arr : null;
+}
+
+/* ---------- Hỏi đáp ---------- */
+const panel = $('#panel');
+function loading(t) { panel.innerHTML = `<div class="load"><div class="spin"></div><span>${esc(t)}</span></div>`; }
+const qa = [];
+function askLoop(qs, i = 0) {
+  if (i >= qs.length) return finish();
+  const q = qs[i], opts = Array.isArray(q.options) ? q.options.slice(0, 4) : [];
+  panel.innerHTML = `
+    <div class="prog">Câu ${i + 1} / ${qs.length}</div>
+    <h3>${esc(q.q)}</h3>
+    <div class="chips">${opts.map(o => `<button type="button">${esc(o)}</button>`).join('')}</div>
+    <textarea id="ans" placeholder="Viết câu trả lời của bạn…" maxlength="300"></textarea>
+    <button class="btn" id="next">${i === qs.length - 1 ? 'Xem lời giải' : 'Tiếp tục'}</button>
+    <div class="err" id="aerr"></div>`;
+  const ta = $('#ans'); ta.focus();
+  panel.querySelector('.chips').onclick = e => { if (e.target.tagName === 'BUTTON') { ta.value = e.target.textContent; ta.focus(); } };
+  $('#next').onclick = () => {
+    const a = ta.value.trim();
+    if (!a) { $('#aerr').textContent = 'Hãy chọn một gợi ý hoặc viết vài chữ nhé.'; return; }
+    qa.push({q: q.q, a}); askLoop(qs, i + 1);
+  };
+}
+
+/* ---------- Kết quả ---------- */
+async function finish() {
+  loading('Đang đọc bài cho bạn…');
+  try {
+    const txt = await ai([
+      {role: 'system', content: SYS},
+      {role: 'user', content: `Câu hỏi: "${question}"\nBa lá bài: ${cardsText(chosen)}.\nCâu trả lời của người xem:\n${qa.map((x, i) => `${i + 1}. ${x.q}\n   → ${x.a}`).join('\n')}\n\nHãy đọc bài bằng tiếng Việt, khoảng 300–400 từ, theo đúng các phần sau (dùng dòng bắt đầu bằng "## " làm tiêu đề):\n## Tổng quan\n## Ý nghĩa ba lá bài (giải từng lá theo vị trí, gắn với câu trả lời của người xem)\n## Câu trả lời cho điều bạn muốn biết (trả lời thẳng vào câu hỏi, nêu khuynh hướng chứ không khẳng định chắc chắn)\n## Lời khuyên (2–3 gạch đầu dòng "- " hành động cụ thể)`}
+    ], 2500);
+    panel.innerHTML = `<div class="res">${md(txt)}</div>
+      <div class="foot">Tarot là công cụ để suy ngẫm, không thay thế lời khuyên chuyên môn về sức khỏe, pháp lý hay tài chính.</div>
+      <div class="actions"><button class="btn" id="again">Hỏi một câu khác</button><button class="btn ghost" id="copy">Sao chép kết quả</button></div>`;
+    $('#again').onclick = () => location.reload();
+    $('#copy').onclick = async e => { try { await navigator.clipboard.writeText(txt); e.target.textContent = 'Đã sao chép'; } catch (x) {} };
+    panel.scrollIntoView({behavior: 'smooth', block: 'start'});
+  } catch (e) {
+    panel.innerHTML = `<h3>Chưa đọc được bài</h3><p class="err" style="min-height:0">${esc(e.message)}</p><div class="actions"><button class="btn" id="retry">Thử lại</button></div>`;
+    $('#retry').onclick = finish;
+  }
+}
+function md(t) {
+  let out = '', list = false;
+  const inl = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+  for (const raw of t.split('\n')) {
+    const l = raw.trim();
+    if (/^[-•*] /.test(l)) { if (!list) { out += '<ul>'; list = true; } out += '<li>' + inl(l.replace(/^[-•*] /, '')) + '</li>'; continue; }
+    if (list) { out += '</ul>'; list = false; }
+    if (!l) continue;
+    if (/^#{1,4} /.test(l)) out += '<h3>' + inl(l.replace(/^#{1,4} /, '')) + '</h3>';
+    else out += '<p>' + inl(l) + '</p>';
+  }
+  return out + (list ? '</ul>' : '');
+}
+</script>
 </body>
 </html>
